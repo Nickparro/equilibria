@@ -46,6 +46,23 @@ class EquilibriaApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-   // Aquí podrás manejar el estado global si decides usarlo
+   final Map<String, double> tiempoPorCategoria = {
+    'Estudio': 0,
+    'Trabajo': 0,
+    'Ejercicio': 0,
+    'Descanso': 0,
+    'Ocio': 0,
+  };
+
+  void agregarActividad(String categoria, int minutos) {
+    if (tiempoPorCategoria.containsKey(categoria)) {
+      tiempoPorCategoria[categoria] = tiempoPorCategoria[categoria]! + minutos;
+      notifyListeners();
+    }
+  }
+
+  Map<String, double> obtenerDistribucionTiempo() {
+    return Map.from(tiempoPorCategoria);
+  }
 }
 

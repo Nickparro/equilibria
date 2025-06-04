@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
 
 class ActivityRegisterScreen extends StatefulWidget {
   @override
@@ -50,8 +52,11 @@ class _ActivityRegisterScreenState extends State<ActivityRegisterScreen> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Aquí guardarías la actividad
-                Navigator.pop(context); // Volver a la pantalla principal
+                 if (_selectedCategory != null) {
+                  Provider.of<MyAppState>(context, listen: false)
+                      .agregarActividad(_selectedCategory!, _duration);
+                }
+                Navigator.pop(context);
               },
               child: Text('Guardar'),
             ),
