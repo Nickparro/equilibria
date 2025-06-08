@@ -7,6 +7,8 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
+flutter_local_notifications: ^17.0.0
+
   flutter:
     sdk: flutter
   english_words: ^4.0.0
