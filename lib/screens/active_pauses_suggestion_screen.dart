@@ -5,19 +5,19 @@ class ActivePausesSuggestionScreen extends StatelessWidget {
   final List<Map<String, String>> activePauses = [
     {
       'title': 'Respiración consciente',
-      'image': 'assets/images/breathing.png',
+      'image': 'assets/images/ImagenUno.png',
     },
     {
       'title': 'Estiramiento exprés',
-      'image': 'assets/images/stretch.png',
+      'image': 'assets/images/ImagenDos.png',
     },
     {
       'title': 'Meditación guiada',
-      'image': 'assets/images/meditation.png',
+      'image': 'assets/images/ImagenTres.png',
     },
     {
       'title': 'Caminata breve',
-      'image': 'assets/images/walk.png',
+      'image': 'assets/images/ImagenCuatro.png',
     },
   ];
 
