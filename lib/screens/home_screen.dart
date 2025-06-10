@@ -24,6 +24,20 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text('Ver Balance Personal'),
             ),
+             SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/activepauses');
+              },
+              child: Text('Pausas Activas'),
+            ),
+             SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/reminder');
+              },
+              child: Text('Ver Recordatorios'),
+            ),
           ],
         ),
       ),
