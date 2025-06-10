@@ -30,7 +30,7 @@ class EquilibriaApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
           useMaterial3: true,
         ),
-        initialRoute: '/',
+        initialRoute: '/login',
         routes: {
           '/': (context) => HomeScreen(), //podria ponerse que HomeSreen es StatelessWidget con const
           '/register': (context) => ActivityRegisterScreen(),
@@ -39,6 +39,7 @@ class EquilibriaApp extends StatelessWidget {
           '/reminder': (context) => ReminderScreen(),
           '/history': (context) => HistoryScreen(),
           '/configuration': (context) => ConfigurationScreen(),
+          '/login': (context) => LoginPage(),
         },
       ),
     );
