@@ -51,15 +51,22 @@ class _ActivityRegisterScreenState extends State<ActivityRegisterScreen> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                 if (_selectedCategory != null) {
-                  Provider.of<MyAppState>(context, listen: false)
-                      .agregarActividad(_selectedCategory!, _duration);
-                }
+            onPressed: () {
+              if (_selectedCategory != null) {
+                Provider.of<MyAppState>(context, listen: false)
+                    .agregarActividad(_selectedCategory!, _duration);
                 Navigator.pop(context);
-              },
-              child: Text('Guardar'),
-            ),
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Por favor selecciona una categoría antes de guardar.'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+            child: Text('Guardar'),
+          ),
           ],
         ),
       ),

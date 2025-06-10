@@ -1,4 +1,3 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +31,7 @@ class EquilibriaApp extends StatelessWidget {
         ),
         initialRoute: '/login',
         routes: {
-          '/': (context) => HomeScreen(), //podria ponerse que HomeSreen es StatelessWidget con const
+          '/': (context) => HomeScreen(), 
           '/register': (context) => ActivityRegisterScreen(),
           '/balance': (context) => BalanceScreen(),
           '/activepauses': (context) => ActivePausesSuggestionScreen(),
