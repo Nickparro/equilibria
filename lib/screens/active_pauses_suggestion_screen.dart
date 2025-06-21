@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ActivePausesSuggestionScreen extends StatelessWidget {
@@ -24,25 +23,37 @@ class ActivePausesSuggestionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE6F0FA),
       appBar: AppBar(
         title: Text('Pausas Activas Sugeridas'),
+        backgroundColor: Color(0xFF6C63FF),
+        foregroundColor: Colors.white,
+        elevation: 0,
       ),
       body: ListView.builder(
         itemCount: activePauses.length,
         itemBuilder: (context, index) {
           final pause = activePauses[index];
-          return Card(
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+          return Container(
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
                       pause['image']!,
                       width: 80,
@@ -57,14 +68,24 @@ class ActivePausesSuggestionScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
+                        color: Colors.black87,
                       ),
                     ),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF6C63FF),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                     onPressed: () {
-                      // Aquí más adelante se iniciará la pausa
+                      // Acción para iniciar pausa activa
                     },
-                    child: Text('Iniciar'),
+                    child: Text(
+                      'Iniciar',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   )
                 ],
               ),

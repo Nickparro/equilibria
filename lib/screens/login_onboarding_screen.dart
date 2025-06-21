@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -8,7 +10,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController userController = TextEditingController();
   final TextEditingController passController = TextEditingController();
-
   String? errorMessage;
 
   void _handleLogin() {
@@ -23,41 +24,96 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         errorMessage = null;
       });
-
-      // Navegar al home
-      Navigator.pushReplacementNamed(context, '/');
+      Provider.of<MyAppState>(context, listen: false).login();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Login', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-            SizedBox(height: 40),
-            TextField(
-              controller: userController,
-              decoration: InputDecoration(labelText: 'Usuario'),
-            ),
-            TextField(
-              controller: passController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Contraseña'),
-            ),
-            if (errorMessage != null) ...[
-              SizedBox(height: 20),
-              Text(errorMessage!, style: TextStyle(color: Colors.red)),
+      backgroundColor: Color(0xFFE6F0FA),
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(24),
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          constraints: BoxConstraints(maxWidth: 400),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 12,
+                offset: Offset(0, 8),
+              ),
             ],
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: _handleLogin,
-              child: Text('Ingresar'),
-            ),
-          ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Bienvenido a Equilibria',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF4A4A88),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24),
+              TextField(
+                controller: userController,
+                decoration: InputDecoration(
+                  labelText: 'Usuario',
+                  filled: true,
+                  fillColor: Color(0xFFF0F4FA),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              TextField(
+                controller: passController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Contraseña',
+                  filled: true,
+                  fillColor: Color(0xFFF0F4FA),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              if (errorMessage != null) ...[
+                SizedBox(height: 16),
+                Text(
+                  errorMessage!,
+                  style: TextStyle(color: Colors.redAccent),
+                ),
+              ],
+              SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _handleLogin,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF6C63FF),
+                    padding: EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    'Ingresar',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
