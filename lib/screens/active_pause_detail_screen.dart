@@ -1,11 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 class ActivePauseDetailScreen extends StatefulWidget {
   final String title;
+  final String description;
+  final String image;
 
-  const ActivePauseDetailScreen({Key? key, required this.title}) : super(key: key);
+  const ActivePauseDetailScreen({
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.image,
+  }) : super(key: key);
 
   @override
   _ActivePauseDetailScreenState createState() => _ActivePauseDetailScreenState();
@@ -44,19 +50,25 @@ class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: Color(0xFF6C63FF),
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              "Instrucciones:",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                widget.image,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Text(
-              "Realiza esta pausa activa durante 1 minuto. Respira profundamente, relaja los hombros y enfócate en tu bienestar.",
+              widget.description,
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 40),
@@ -71,6 +83,9 @@ class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF6C63FF),
+              ),
               child: Text("Finalizar pausa"),
             )
           ],
@@ -79,3 +94,4 @@ class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
     );
   }
 }
+
