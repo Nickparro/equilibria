@@ -80,8 +80,12 @@ class ActivePausesSuggestionScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // Acción para iniciar pausa activa
-                    },
+                     Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => ActivePauseDetailScreen(
+                      title: pause['title']!
+                               },
                     child: Text(
                       'Iniciar',
                       style: TextStyle(color: Colors.white),
