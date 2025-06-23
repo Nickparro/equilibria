@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../main.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class BalanceScreen extends StatelessWidget {
   @override
@@ -141,6 +145,26 @@ class BalanceScreen extends StatelessWidget {
     return colors[index % colors.length];
   }
 
+  void _mostrarNotificacion(String mensaje) async {
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      'canal_equilibria',
+      'Recordatorios Equilibria',
+      channelDescription: 'Notificaciones de hábitos desbalanceados',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      '¡Recordatorio de Equilibrio!',
+      mensaje,
+      notificationDetails,
+    );
+  }
+
   String _evaluarBalance(Map<String, double> porcentajes) {
     if (porcentajes.values.every((p) => p == 0)) {
       return "Aún no has registrado actividades.";
@@ -152,9 +176,15 @@ class BalanceScreen extends StatelessWidget {
         porcentajes.entries.reduce((a, b) => a.value < b.value ? a : b);
 
     if (categoriaMenor.value < promedio * 0.75) {
-      return "Estás descuidando ${categoriaMenor.key.toLowerCase()}, ¡no lo olvides!";
+      final mensaje =
+          "Estás descuidando ${categoriaMenor.key.toLowerCase()}, ¡no lo olvides!";
+
+      _mostrarNotificacion(mensaje);
+
+      return mensaje;
     }
 
     return "¡Estás balanceado!";
   }
 }
+
