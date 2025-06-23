@@ -3,23 +3,27 @@ import 'active_pause_detail_screen.dart';
 
 class ActivePausesSuggestionScreen extends StatelessWidget {
   final List<Map<String, String>> activePauses = [
-    {
-      'title': 'Respiración consciente',
-      'image': 'assets/images/ImagenUno.png',
-    },
-    {
-      'title': 'Estiramiento exprés',
-      'image': 'assets/images/ImagenDos.png',
-    },
-    {
-      'title': 'Meditación guiada',
-      'image': 'assets/images/ImagenTres.png',
-    },
-    {
-      'title': 'Caminata breve',
-      'image': 'assets/images/ImagenCuatro.png',
-    },
-  ];
+     {
+    'title': 'Respiración consciente',
+    'description': 'Para realizar una pausa activa de respiración, siéntate o párate cómodamente, relaja los hombros y el cuello, y cierra los ojos. Inhala por 4 segundos, sostén por 4 y exhala por 4. Repite durante 1 minuto para relajarte.',
+    'image': 'assets/images/ImagenUno.png',
+  },
+  {
+    'title': 'Estiramiento exprés',
+    'description': 'Para realizar una pausa activa de estiramiento express, sigue estos pasos: Inicia con movimientos suaves de cuello y hombros. Ponte de pie, estira brazos hacia arriba y luego hacia los lados.Finaliza con movimientos circulares de muñecas y tobillos. Libera tensión en cuello y hombros.',
+    'image': 'assets/images/ImagenDos.png',
+  },
+  {
+    'title': 'Meditación guiada',
+    'description': 'Para realizar una pausa activa con meditación guiada, sigue estos pasos: busca un lugar tranquilo, siéntate cómodamente,Cierra los ojos, escucha la meditación guiada, enfócate en la respiración y las sensaciones corporales. Respira con calma y concéntrate en el sonido de tu respiración o una música suave.',
+    'image': 'assets/images/ImagenTres.png',
+  },
+  {
+    'title': 'Caminata breve',
+    'description': 'Para realizar una pausa activa de caminata breve, primero, levántate de tu lugar de trabajo y comienza a caminar lentamente por un espacio designado. Camina lentamente por tu espacio durante 1 minuto. Observa tu entorno y respira con conciencia. Camina a un ritmo moderado, ni demasiado rápido ni demasiado lento, y realiza movimientos suaves con los brazos. Realiza movimientos circulares con los hombros y el cuello para liberar tensión. Al finalizar la caminata, puedes realizar ejercicios de estiramiento para brazos,',
+    'image': 'assets/images/ImagenCuatro.png',
+  },
+];
 
   @override
   Widget build(BuildContext context) {
@@ -81,18 +85,17 @@ class ActivePausesSuggestionScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                      builder: (context) => ActivePauseDetailScreen(
-                      title: pause['title']!
-                               },
-                    child: Text(
-                      'Iniciar',
-                      style: TextStyle(color: Colors.white),
+                      Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => ActivePauseDetailScreen(
+                    title: pause['title']!,
+                    description: pause['description']!,
+                    image: pause['image']!,
                     ),
-                  )
-                ],
+                  ),
+                  );
+                },
               ),
             ),
           );
