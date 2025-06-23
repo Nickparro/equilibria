@@ -18,10 +18,10 @@ class ActivityRegisterScreen extends StatefulWidget {
   });
 
   @override
-  _ActivityRegisterScreenState createState() => _ActivityRegisterScreenState();
+  ActivityRegisterScreenState createState() => ActivityRegisterScreenState();
 }
 
-class _ActivityRegisterScreenState extends State<ActivityRegisterScreen> {
+class ActivityRegisterScreenState extends State<ActivityRegisterScreen> {
   String? _selectedCategory;
   final TextEditingController _descriptionController = TextEditingController();
   int _selectedHours = 0;

@@ -24,10 +24,3 @@ flutter:
   assets:
     - assets/images/
 
-    
-dependencies:
-  flutter:
-    sdk: flutter
-  provider: ^6.1.5
-  fl_chart: ^0.66.2
-  flutter_local_notifications: ^17.0.0

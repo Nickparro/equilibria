@@ -3,10 +3,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class ReminderScreen extends StatefulWidget {
   @override
-  _ReminderScreenState createState() => _ReminderScreenState();
+  ReminderScreenState createState() => ReminderScreenState();
 }
 
-class _ReminderScreenState extends State<ReminderScreen> {
+class ReminderScreenState extends State<ReminderScreen> {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
