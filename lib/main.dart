@@ -168,6 +168,28 @@ class _MainNavigationState extends State<MainNavigation> {
             BottomNavigationBarItem(
               icon: Icon(Icons.fitness_center),
               label: 'Pausas',
+
+                void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicialización de notificaciones
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // Permiso para Android 13+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestPermission();
+
+  runApp(EquilibriaApp());
+                }
             ),
           ],
         ),
