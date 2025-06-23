@@ -7,6 +7,9 @@ import 'screens/active_pauses_suggestion_screen.dart';
 import 'screens/activity_register_screen.dart';
 import 'screens/history_screen.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 void main() {
   runApp(EquilibriaApp());
 }
