@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'active_pause_detail_screen.dart';
 
 class ActivePausesSuggestionScreen extends StatelessWidget {
   final List<Map<String, String>> activePauses = [
