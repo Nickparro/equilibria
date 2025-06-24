@@ -208,5 +208,114 @@ class EquilibriaApp extends StatelessWidget {
 }
 }
 
+class MyAppState extends ChangeNotifier {
+  final Map<String, double> tiempoPorCategoria = {
+    'Estudio': 0,
+    'Trabajo': 0,
+    'Ejercicio': 0,
+    'Descanso': 0,
+    'Ocio': 0,
+  };
+
+  bool _isLoggedIn = false;
+  bool get isLoggedIn => _isLoggedIn;
+
+  void login() {
+    _isLoggedIn = true;
+    notifyListeners();
+  }
+
+  final List<Actividad> historialActividades = [];
+
+  void agregarActividad(String categoria, int minutos, [String descripcion = '']) {
+    if (tiempoPorCategoria.containsKey(categoria)) {
+      tiempoPorCategoria[categoria] = tiempoPorCategoria[categoria]! + minutos;
+      historialActividades.insert(
+        0,
+        Actividad(
+          categoria: categoria,
+          descripcion: descripcion,
+          minutos: minutos,
+        ),
+      );
+      notifyListeners();
+      // ¡Aquí se llama la nueva función para verificar y notificar!
+      checkBalanceAndNotify();
+    }
+  }
+
+  void editarActividad(int index, String categoria, int minutos, String descripcion) {
+    if (index < 0 || index >= historialActividades.length) {
+      print('Error: Índice de actividad fuera de rango para editar.');
+      return;
+    }
+
+    final vieja = historialActividades[index];
+    tiempoPorCategoria[vieja.categoria] =
+        tiempoPorCategoria[vieja.categoria]! - vieja.minutos;
+    tiempoPorCategoria[categoria] = (tiempoPorCategoria[categoria] ?? 0) + minutos;
+
+    historialActividades[index] = Actividad(
+      categoria: categoria,
+      minutos: minutos,
+      descripcion: descripcion,
+    );
+
+    notifyListeners();
+    // ¡Aquí se llama la nueva función para verificar y notificar!
+    checkBalanceAndNotify();
+  }
+
+  Map<String, double> obtenerDistribucionTiempo() => Map.from(tiempoPorCategoria);
+  List<Actividad> obtenerHistorial() => List.unmodifiable(historialActividades);
+
+  // Nuevo método para verificar el balance y enviar la notificación
+  void checkBalanceAndNotify() {
+    final double estudioTiempo = tiempoPorCategoria['Estudio'] ?? 0;
+    final double trabajoTiempo = tiempoPorCategoria['Trabajo'] ?? 0;
+    final double descansoTiempo = tiempoPorCategoria['Descanso'] ?? 0;
+    final double ocioTiempo = tiempoPorCategoria['Ocio'] ?? 0;
+    final double ejercicioTiempo = tiempoPorCategoria['Ejercicio'] ?? 0;
+
+    final double productiveTime = estudioTiempo + trabajoTiempo;
+    final double restLeisureExerciseTime = descansoTiempo + ocioTiempo + ejercicioTiempo;
+
+    const double balanceThresholdRatio = 0.3; // Puedes ajustar este porcentaje
+
+    if (productiveTime == 0 && restLeisureExerciseTime == 0) {
+      return; // No hay actividades registradas aún
+    }
+
+    if (productiveTime > 0 && restLeisureExerciseTime < (productiveTime * balanceThresholdRatio)) {
+      NotificationService().showNotification(
+        id: 0,
+        title: '¡Desequilibrio Detectado!',
+        body: 'Parece que necesitas más tiempo para descansar, el ocio o el ejercicio. ¡Prioriza tu bienestar!',
+        payload: 'unbalanced_warning',
+      );
+    } else {
+      NotificationService().showNotification(
+        id: 1,
+        title: '¡Balance Positivo!',
+        body: '¡Tu tiempo parece estar bien equilibrado! Sigue así.',
+        payload: 'balanced_info',
+      );
+    }
+  }
+}
+
+// Mantén tu clase Actividad como está
+class Actividad {
+  final String categoria;
+  final String descripcion;
+  final int minutos;
+  final DateTime timestamp;
+
+  Actividad({
+    required this.categoria,
+    required this.descripcion,
+    required this.minutos,
+  }) : timestamp = DateTime.now();
+}
 
 
