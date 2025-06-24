@@ -29,6 +29,44 @@ class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
         });
       } else {
         _timer?.cancel();
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: Text('🎉 ¡Pausa completada!', textAlign: TextAlign.center),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Respira profundo y sigue con tu día 😊',
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 20),
+                  Image.asset(
+                    'assets/images/emoji_equilibria.png',
+                    height: 100,
+                  ),
+                ],
+              ),
+              actions: [
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Cierra el diálogo
+                      Navigator.pop(context); // Vuelve a la pantalla anterior
+                    },
+                    child: Text('Aceptar'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF6C63FF),
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
+        );
       }
     });
   }
@@ -94,4 +132,3 @@ class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
     );
   }
 }
-
