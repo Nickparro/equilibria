@@ -24,3 +24,10 @@ flutter:
   assets:
     - assets/images/
 
+    dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.5 
+  flutter_local_notifications: ^17.0.0 
+  timezone: ^0.9.3 # Necesario para la configuración de zona horaria
+
