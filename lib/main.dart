@@ -6,6 +6,7 @@ import 'screens/balance_screen.dart';
 import 'screens/active_pauses_suggestion_screen.dart';
 import 'screens/activity_register_screen.dart';
 import 'screens/history_screen.dart';
+import 'package:equilibria_app/services/notification_service.dart';
 
 void main() {
 runApp(EquilibriaApp());
@@ -164,6 +165,41 @@ label: 'Balance',
 BottomNavigationBarItem(
 icon: Icon(Icons.fitness_center),
 label: 'Pausas',
+
+
+  void main() async {
+  // Asegura que el binding de Flutter esté inicializado
+  WidgetsFlutterBinding.ensureInitialized();
+  // Inicializa el servicio de notificaciones
+  await NotificationService().init();
+  runApp(const EquilibriaApp());
+}
+
+class EquilibriaApp extends StatelessWidget {
+  const EquilibriaApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => MyAppState(),
+      child: MaterialApp(
+        title: 'Equilibria',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+          useMaterial3: true,
+        ),
+        home: Consumer<MyAppState>(
+          builder: (context, appState, _) {
+            // Asumiendo que `LoginPage` y `MainNavigation` existen.
+            // Si no, asegúrate de tener una pantalla inicial para probar.
+            return appState.isLoggedIn ? MainNavigation() : LoginPage();
+          },
+        ),
+      ),
+    );
+  }
+}
 ),
 ],
 ),
