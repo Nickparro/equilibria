@@ -7,17 +7,17 @@ class ActivePauseDetailScreen extends StatefulWidget {
   final String image;
 
   const ActivePauseDetailScreen({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.image,
-  }) : super(key: key);
+  });
 
   @override
-  _ActivePauseDetailScreenState createState() => _ActivePauseDetailScreenState();
+  ActivePauseDetailScreenState createState() => ActivePauseDetailScreenState();
 }
 
-class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
+class ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
   int _seconds = 60;
   Timer? _timer;
 
@@ -57,10 +57,10 @@ class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
                       Navigator.pop(context); // Cierra el diálogo
                       Navigator.pop(context); // Vuelve a la pantalla anterior
                     },
-                    child: Text('Aceptar'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF6C63FF),
                     ),
+                    child: Text('Aceptar'),
                   ),
                 )
               ],
@@ -124,7 +124,7 @@ class _ActivePauseDetailScreenState extends State<ActivePauseDetailScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF6C63FF),
               ),
-              child: Text("Finalizar pausa"),
+              child: Text("Finalizar pausa", style: TextStyle(color: Colors.white)),
             )
           ],
         ),

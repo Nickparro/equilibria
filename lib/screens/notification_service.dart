@@ -1,7 +1,12 @@
-// lib/services/notification_service.dart
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tz; // Importa los datos de zona horaria
+//import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz; 
+
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+
+  print("Notificación tocada en segundo plano con payload: ${notificationResponse.payload}");
+}
 
 class NotificationService {
   // Singleton pattern para asegurar una única instancia del servicio
@@ -17,43 +22,21 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    // Configuración para Android
-    // Usa '@mipmap/ic_launcher' como ícono por defecto de la aplicación
-    // Puedes reemplazarlo con un ícono personalizado si lo tienes en Android (drawable, mipmap)
+   //(drawable, mipmap)
     final AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    // Configuración para iOS/macOS
-    final DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-      requestAlertPermission: true, // Solicitar permiso para mostrar alertas
-      requestBadgePermission: true, // Solicitar permiso para actualizar el badge de la app
-      requestSoundPermission: true, // Solicitar permiso para reproducir sonidos
-      onDidReceiveLocalNotification: (id, title, body, payload) async {
-        // Callback para notificaciones recibidas mientras la app está en primer plano (solo iOS <= 9)
-        // Puedes manejar acciones aquí si es necesario
-      },
-    );
-
-    // Configuración general para todas las plataformas
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-      macOS: initializationSettingsIOS, // Mismo para macOS
     );
 
-    // Inicializa los datos de zona horaria globalmente
     tz.initializeTimeZones();
-    // Establece la ubicación de la zona horaria local.
-    // Es importante para las notificaciones programadas. Puedes ajustarla a la zona horaria de Colombia.
-    tz.setLocalLocation(tz.getLocation('America/Bogota')); // Ejemplo para Bogotá, Colombia
 
-    // Inicializa el plugin de notificaciones con las configuraciones
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse, // Para responder a toques en notificaciones
-      onDidReceiveBackgroundNotificationResponse: onDidReceiveNotificationResponse, // Para responder en segundo plano (Android)
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse, 
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
   }
 

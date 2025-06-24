@@ -6,173 +6,12 @@ import 'screens/balance_screen.dart';
 import 'screens/active_pauses_suggestion_screen.dart';
 import 'screens/activity_register_screen.dart';
 import 'screens/history_screen.dart';
-import 'package:equilibria_app/services/notification_service.dart';
+import 'screens/notification_service.dart';
 
-void main() {
-runApp(EquilibriaApp());
-}
-
-class EquilibriaApp extends StatelessWidget {
-const EquilibriaApp({super.key});
-
-@override
-Widget build(BuildContext context) {
-return ChangeNotifierProvider(
-create: (context) => MyAppState(),
-child: MaterialApp(
-title: 'Equilibria',
-debugShowCheckedModeBanner: false,
-theme: ThemeData(
-colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-useMaterial3: true,
-),
-home: Consumer<MyAppState>(
-builder: (context, appState, _) {
-return appState.isLoggedIn ? MainNavigation() : LoginPage();
-},
-),
-),
-);
-}
-}
-
-class MyAppState extends ChangeNotifier {
-final Map<String, double> tiempoPorCategoria = {
-'Estudio': 0,
-'Trabajo': 0,
-'Ejercicio': 0,
-'Descanso': 0,
-'Ocio': 0,
-};
-
-bool _isLoggedIn = false;
-bool get isLoggedIn => _isLoggedIn;
-
-void login() {
-_isLoggedIn = true;
-notifyListeners();
-}
-
-final List<Actividad> historialActividades = [];
-
-void agregarActividad(String categoria, int minutos, [String descripcion = '']) {
-if (tiempoPorCategoria.containsKey(categoria)) {
-tiempoPorCategoria[categoria] = tiempoPorCategoria[categoria]! + minutos;
-historialActividades.insert(
-0,
-Actividad(categoria: categoria, descripcion: descripcion, minutos: minutos),
-);
-notifyListeners();
-}
-}
-
-void editarActividad(int index, String categoria, int minutos, String descripcion) {
-final vieja = historialActividades[index];
-tiempoPorCategoria[vieja.categoria] = tiempoPorCategoria[vieja.categoria]! - vieja.minutos;
-tiempoPorCategoria[categoria] = (tiempoPorCategoria[categoria] ?? 0) + minutos;
-
-historialActividades[index] = Actividad(
-categoria: categoria,
-minutos: minutos,
-descripcion: descripcion,
-);
-
-notifyListeners();
-}
-
-Map<String, double> obtenerDistribucionTiempo() => Map.from(tiempoPorCategoria);
-List<Actividad> obtenerHistorial() => List.unmodifiable(historialActividades);
-
-}
-
-class Actividad {
-final String categoria;
-final String descripcion;
-final int minutos;
-final DateTime timestamp;
-
-Actividad({
-required this.categoria,
-required this.descripcion,
-required this.minutos,
-}) : timestamp = DateTime.now();
-}
-
-class MainNavigation extends StatefulWidget {
-@override
-State<MainNavigation> createState() => _MainNavigationState();
-}
-
-class _MainNavigationState extends State<MainNavigation> {
-int _selectedIndex = 1;
-
-final List<Widget> _screens = [
-HistoryScreen(),
-BalanceScreen(),
-ActivePausesSuggestionScreen(),
-];
-
-void _onItemTapped(int index) {
-setState(() => _selectedIndex = index);
-}
-
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-backgroundColor: Color(0xFFF0F4FA),
-body: _screens[_selectedIndex],
-floatingActionButton: FloatingActionButton(
-backgroundColor: Color(0xFF6C63FF),
-onPressed: () {
-Navigator.push(
-context,
-MaterialPageRoute(builder: (context) => ActivityRegisterScreen()),
-);
-},
-shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-child: Icon(Icons.add, color: Colors.white, size: 28),
-),
-floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-bottomNavigationBar: Container(
-decoration: BoxDecoration(
-color: Colors.white,
-boxShadow: [
-BoxShadow(
-color: Colors.black12,
-blurRadius: 6,
-offset: Offset(0, -2),
-),
-],
-),
-child: BottomNavigationBar(
-backgroundColor: Colors.white,
-selectedItemColor: Color(0xFF6C63FF),
-unselectedItemColor: Colors.grey,
-selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
-elevation: 8,
-currentIndex: _selectedIndex,
-onTap: _onItemTapped,
-items: const <BottomNavigationBarItem>[
-BottomNavigationBarItem(
-icon: Icon(Icons.history),
-label: 'Historial',
-),
-BottomNavigationBarItem(
-icon: Icon(Icons.pie_chart),
-label: 'Balance',
-),
-BottomNavigationBarItem(
-icon: Icon(Icons.fitness_center),
-label: 'Pausas',
-
-
-  void main() async {
-  // Asegura que el binding de Flutter esté inicializado
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Inicializa el servicio de notificaciones
   await NotificationService().init();
-  runApp(const EquilibriaApp());
+  runApp(EquilibriaApp());
 }
 
 class EquilibriaApp extends StatelessWidget {
@@ -191,21 +30,12 @@ class EquilibriaApp extends StatelessWidget {
         ),
         home: Consumer<MyAppState>(
           builder: (context, appState, _) {
-            // Asumiendo que `LoginPage` y `MainNavigation` existen.
-            // Si no, asegúrate de tener una pantalla inicial para probar.
             return appState.isLoggedIn ? MainNavigation() : LoginPage();
           },
         ),
       ),
     );
   }
-}
-),
-],
-),
-),
-);
-}
 }
 
 class MyAppState extends ChangeNotifier {
@@ -225,86 +55,74 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  final List<Actividad> historialActividades = [];
+ final List<Actividad> historialActividades = [];
 
   void agregarActividad(String categoria, int minutos, [String descripcion = '']) {
     if (tiempoPorCategoria.containsKey(categoria)) {
       tiempoPorCategoria[categoria] = tiempoPorCategoria[categoria]! + minutos;
       historialActividades.insert(
         0,
-        Actividad(
-          categoria: categoria,
-          descripcion: descripcion,
-          minutos: minutos,
-        ),
+        Actividad(categoria: categoria, descripcion: descripcion, minutos: minutos),
       );
       notifyListeners();
-      // ¡Aquí se llama la nueva función para verificar y notificar!
       checkBalanceAndNotify();
     }
   }
 
   void editarActividad(int index, String categoria, int minutos, String descripcion) {
-    if (index < 0 || index >= historialActividades.length) {
-      print('Error: Índice de actividad fuera de rango para editar.');
-      return;
-    }
+  final vieja = historialActividades[index];
+  tiempoPorCategoria[vieja.categoria] = tiempoPorCategoria[vieja.categoria]! - vieja.minutos;
+  tiempoPorCategoria[categoria] = (tiempoPorCategoria[categoria] ?? 0) + minutos;
+  
+  historialActividades[index] = Actividad(
+    categoria: categoria,
+    minutos: minutos,
+    descripcion: descripcion,
+  );
 
-    final vieja = historialActividades[index];
-    tiempoPorCategoria[vieja.categoria] =
-        tiempoPorCategoria[vieja.categoria]! - vieja.minutos;
-    tiempoPorCategoria[categoria] = (tiempoPorCategoria[categoria] ?? 0) + minutos;
+  notifyListeners();
+  checkBalanceAndNotify();
+}
+void checkBalanceAndNotify() {
+  final double estudioTiempo = tiempoPorCategoria['Estudio'] ?? 0;
+  final double trabajoTiempo = tiempoPorCategoria['Trabajo'] ?? 0;
+  final double descansoTiempo = tiempoPorCategoria['Descanso'] ?? 0;
+  final double ocioTiempo = tiempoPorCategoria['Ocio'] ?? 0;
+  final double ejercicioTiempo = tiempoPorCategoria['Ejercicio'] ?? 0;
 
-    historialActividades[index] = Actividad(
-      categoria: categoria,
-      minutos: minutos,
-      descripcion: descripcion,
-    );
+  final double productiveTime = estudioTiempo + trabajoTiempo;
+  final double restLeisureExerciseTime = descansoTiempo + ocioTiempo + ejercicioTiempo;
 
-    notifyListeners();
-    // ¡Aquí se llama la nueva función para verificar y notificar!
-    checkBalanceAndNotify();
+  const double balanceThresholdRatio = 0.3; // Puedes ajustar este porcentaje
+
+  if (productiveTime == 0 && restLeisureExerciseTime == 0) {
+    return; // No hay actividades registradas aún
   }
+
+  if (productiveTime > 0 && restLeisureExerciseTime < (productiveTime * balanceThresholdRatio)) {
+    NotificationService().showNotification(
+      id: 0,
+      title: '¡Desequilibrio Detectado!',
+      body: 'Parece que necesitas más tiempo para descansar, el ocio o el ejercicio. ¡Prioriza tu bienestar!',
+      payload: 'unbalanced_warning',
+    );
+  } else {
+    NotificationService().showNotification(
+      id: 1,
+      title: '¡Balance Positivo!',
+      body: '¡Tu tiempo parece estar bien equilibrado! Sigue así.',
+      payload: 'balanced_info',
+    );
+  }
+}
+
 
   Map<String, double> obtenerDistribucionTiempo() => Map.from(tiempoPorCategoria);
   List<Actividad> obtenerHistorial() => List.unmodifiable(historialActividades);
 
-  // Nuevo método para verificar el balance y enviar la notificación
-  void checkBalanceAndNotify() {
-    final double estudioTiempo = tiempoPorCategoria['Estudio'] ?? 0;
-    final double trabajoTiempo = tiempoPorCategoria['Trabajo'] ?? 0;
-    final double descansoTiempo = tiempoPorCategoria['Descanso'] ?? 0;
-    final double ocioTiempo = tiempoPorCategoria['Ocio'] ?? 0;
-    final double ejercicioTiempo = tiempoPorCategoria['Ejercicio'] ?? 0;
-
-    final double productiveTime = estudioTiempo + trabajoTiempo;
-    final double restLeisureExerciseTime = descansoTiempo + ocioTiempo + ejercicioTiempo;
-
-    const double balanceThresholdRatio = 0.3; // Puedes ajustar este porcentaje
-
-    if (productiveTime == 0 && restLeisureExerciseTime == 0) {
-      return; // No hay actividades registradas aún
-    }
-
-    if (productiveTime > 0 && restLeisureExerciseTime < (productiveTime * balanceThresholdRatio)) {
-      NotificationService().showNotification(
-        id: 0,
-        title: '¡Desequilibrio Detectado!',
-        body: 'Parece que necesitas más tiempo para descansar, el ocio o el ejercicio. ¡Prioriza tu bienestar!',
-        payload: 'unbalanced_warning',
-      );
-    } else {
-      NotificationService().showNotification(
-        id: 1,
-        title: '¡Balance Positivo!',
-        body: '¡Tu tiempo parece estar bien equilibrado! Sigue así.',
-        payload: 'balanced_info',
-      );
-    }
-  }
 }
 
-// Mantén tu clase Actividad como está
+
 class Actividad {
   final String categoria;
   final String descripcion;
@@ -318,4 +136,77 @@ class Actividad {
   }) : timestamp = DateTime.now();
 }
 
+class MainNavigation extends StatefulWidget {
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
 
+class _MainNavigationState extends State<MainNavigation> {
+  int _selectedIndex = 1;
+
+  final List<Widget> _screens = [
+    HistoryScreen(),
+    BalanceScreen(),
+    ActivePausesSuggestionScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFF0F4FA),
+      body: _screens[_selectedIndex],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF6C63FF),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ActivityRegisterScreen()),
+          );
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Icon(Icons.add, color: Colors.white, size: 28),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, -2),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          selectedItemColor: Color(0xFF6C63FF),
+          unselectedItemColor: Colors.grey,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400),
+          elevation: 8,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: 'Historial',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.pie_chart),
+              label: 'Balance',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.fitness_center),
+              label: 'Pausas',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
